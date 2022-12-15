@@ -6,11 +6,11 @@
 
 <div class="column">
 
-{% for profile in profiles %}
+{% for post in post %}
 
     <div class="block">
       <div class="card">
-        <a href=/creator/{{profile.id}}>
+        <a href="#">
           <div class="card-content">
             <div class="media">
               <div class="media-left">
@@ -21,10 +21,10 @@
               </div>
               <div class="media-content">
                 <p class="title is-4">
-                  {{ profile.user.username }}
+                  {{ post.title }}
                 </p>
                 <p class="subtitle is-6">
-                  @{{ profile.user.username|lower }}
+                  @{{ post.yt_url }}
                 </p>
               </div>
             </div>

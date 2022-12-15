@@ -22,3 +22,13 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile = Profile(user=instance)
         user_profile.save()
 
+class Post(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    yt_link = models.URLField()
+    created_ad = models.DateTimeField(auto_now_add=True)
+    likes_counter = models.IntegerField(default=0)
+
+    def __str__(self):
+        return (f'{self.owner}, {self.title}')
