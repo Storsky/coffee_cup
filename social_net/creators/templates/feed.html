@@ -5,8 +5,8 @@
 {% block content %}
 
 <div class="column">
-
-{% for post in post %}
+  is it works?
+{% for post in posts %}
 
     <div class="block">
       <div class="card">
@@ -23,8 +23,12 @@
                 <p class="title is-4">
                   {{ post.title }}
                 </p>
+                <iframe width="480" height="270" src={{post.yt_link}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <p>
+                  {{post.description}}
+                </p>
                 <p class="subtitle is-6">
-                  @{{ post.yt_url }}
+                  @{{ post.owner }}
                 </p>
               </div>
             </div>

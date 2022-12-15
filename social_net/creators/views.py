@@ -1,9 +1,13 @@
 from django.shortcuts import render
-from .models import Profile
+from .models import Profile, Post
 
 def index(request):
-    template = 'base.html'
-    context = {}
+    template = 'feed.html'
+    posts = Post.objects.exclude(owner=request.user)
+    for post in posts:
+        video_id = post.yt_link[32:43]
+        post.yt_link = "https://www.youtube.com/embed/"+video_id
+    context = {'posts': posts}
     return render(request, template, context)
 
 def show_all_profiles(request):
