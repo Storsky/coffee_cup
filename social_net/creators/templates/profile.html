@@ -5,32 +5,88 @@
 {% block content %}
 <div class="column">
   <div class="blick">
-
-    <h1 class="title is-3">
+    <img src="../{{profile.avatar}}" alt="avatar">
+    <h3 class="title is-3">
       @{{ profile.user.username }}
-    </h1>
+    </h3>
   </div>
   <br>
   <br>
   <form method="post">
     {% csrf_token %}
-  <div class="buttons has-addons">
-    {% if profile in user.profile.follows.all %}
-    <button class="button is-static">Follow</button>
-    <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
-    {% else %}
-    <button class="button is-success" name="follow" value="follow">Follow</button>
-    <button class="button is-static">Unfollow</button>    
-    {%endif%}
-  </div>
+    <div class="buttons has-addons">
+      {% if profile in user.profile.follows.all %}
+      <button class="button is-static">Follow</button>
+      <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+      {% else %}
+      <button class="button is-success" name="follow" value="follow">Follow</button>
+      <button class="button is-static">Unfollow</button>
+      {%endif%}
+    </div>
   </form>
 </div>
+<div class="column">
+  {% if request.user.profile.id == profile.id %}
+  <div class="block">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button is-link is-fullwidth is-medium" type="submit" name = "submit">
+      Submit!
+    </button>
+    
+
+  </form>
+  </div>
+  {% endif %}
+  {% for post in profile.user.posts.all %}
+
+  <div class="block">
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48">
+              <img src="../{{post.owner.profile.avatar}}" alt="Placeholder image">
+            </figure>
+          </div>
+          
+          <div class="media-content">
+            <p class="title is-4">
+              {{ post.title }}
+            </p>
+            <iframe width="480" height="270" src={{post.video_id}} title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+            <p>
+              {{post.description}}
+            </p>
+            <p class="subtitle is-6">
+              @{{ post.owner }}
+            </p>
+          </div>
+          <div class="media-right">
+            <form method="post">
+              {% csrf_token %}
+              <div class="button is-danger is-small">
+                <button class="button is-danger is-small" type="submit" name = "delete">Delete</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
 
 <div class="column is-one-third">
   <div class="block">
-    <a href="#">
+    <a href="../">
       <button class="button is-dark is_outlined">
-        Подписаться
+        На главную
       </button>
     </a>
     <br>
@@ -67,10 +123,12 @@
           </li>
           {% endfor %}
         </ul>
+
       </div>
     </div>
   </div>
 </div>
+
 
 
 {% endblock content %}

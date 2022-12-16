@@ -5,17 +5,16 @@
 {% block content %}
 
 <div class="column">
-  is it works?
 {% for post in posts %}
 
     <div class="block">
       <div class="card">
-        <a href="#">
+        <a href=creator/{{post.owner.profile.id}}>
           <div class="card-content">
             <div class="media">
               <div class="media-left">
                 <figure class="image is-48x48">
-                  <img src="https://bulma.io/images/placeholders/96x96.png"
+                  <img src="../{{post.owner.profile.avatar}}"
                        alt="Placeholder image">
                 </figure>
               </div>
@@ -23,7 +22,7 @@
                 <p class="title is-4">
                   {{ post.title }}
                 </p>
-                <iframe width="480" height="270" src={{post.yt_link}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="480" height="270" src={{post.video_id}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <p>
                   {{post.description}}
                 </p>
@@ -31,6 +30,16 @@
                   @{{ post.owner }}
                 </p>
               </div>
+              {% if post.user.id == request.user.id %}
+              <div class="media-right">
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="button is-danger is-small">
+                    <button class="button is-danger is-small" type="submit" name = "delete">Delete</button>
+                  </div>
+                </form>
+              </div>
+              {% endif %}
             </div>
           </div>
         </a>

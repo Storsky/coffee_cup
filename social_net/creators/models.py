@@ -13,6 +13,7 @@ class Profile(models.Model):
                                     symmetrical=False,
                                     blank=True
                                     )
+    avatar = models.ImageField(default='static/avatars/default.jpg', upload_to='static/avatars')
     def __str__(self):
         return self.user.username
 
@@ -29,6 +30,12 @@ class Post(models.Model):
     yt_link = models.URLField()
     created_ad = models.DateTimeField(auto_now_add=True)
     likes_counter = models.IntegerField(default=0)
+    video_id = models.CharField(max_length=55, default='https://www.youtube.com/embed/dQw4w9WgXcQ')
+
+    def save(self, *args, **kwargs):
+        self.video_id = 'https://www.youtube.com/embed/' + self.yt_link[32:43]
+        super(Post, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return (f'{self.owner}, {self.title}')

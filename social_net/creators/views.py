@@ -1,12 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Profile, Post
+from .forms import PostForm
 
 def index(request):
     template = 'feed.html'
     posts = Post.objects.exclude(owner=request.user)
-    for post in posts:
-        video_id = post.yt_link[32:43]
-        post.yt_link = "https://www.youtube.com/embed/"+video_id
     context = {'posts': posts}
     return render(request, template, context)
 
@@ -19,15 +17,27 @@ def show_all_profiles(request):
 
 def show_profile(request, pk):
     template = 'profile.html'
+    form = PostForm()
     profile = Profile.objects.get(pk=pk)
-    context = {'profile' : profile}
+    context = {'profile' : profile, 'form': form}
+    
     if request.method == 'POST':
-        current_user = request.user.profile
-        data = request.POST
-        action = data.get('follow')
-        if action == 'follow':
-            current_user.follows.add(profile)
-        elif action == 'unfollow':
-            current_user.follows.remove(profile)
+        if 'follow' in request.POST:
+            current_user = request.user.profile
+            data = request.POST
+            action = data.get('follow')
+            if action == 'follow':
+                current_user.follows.add(profile)
+            elif action == 'unfollow':
+                current_user.follows.remove(profile)
+
+        elif 'submit' in request.POST:
+            form = PostForm(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.owner = request.user
+                post.save()
+                return redirect(f'/creator/{request.user.profile.id}')
+        form = PostForm()
 
     return render(request, template, context)
