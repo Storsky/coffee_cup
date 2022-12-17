@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,54 +19,55 @@
 </head>
 
 <body>
-    <nav id="navbar" class="bd-navbar navbar is-medium is-light"> 
+    <nav id="navbar" class="bd-navbar navbar  is-light"> 
         <div class="navbar-brand">
             <a class="navbar-item" href="/">
                 <img src="https://www.shareicon.net/download/128x128//2016/01/01/227736_folder_256x256.png" alt="Coffee_cup">
             </a>
-            <h2 class="title is-2">Coffee cup!</h2>
+            <h2 class="title is-3">Coffee cup!</h2>
         </div>
         <div id="navMenu" class="navbar-menu">
             <div id="navbarStartOriginal" class="navbar-start bd-navbar-start bd-is-original">
-                <a class="
-                    navbar-item
-                    bd-navbar-item
-                    bd-navbar-item-videos
-                    bd-navbar-item-base"                
+                <a class="navbar-item"                
                     href="/creator/{{request.user.profile.id}}">
-                    <span class="icon has-text-success">
-                        <i class="fas fa-play-circle"></i>
-                    </span>
                     <span>
                         My page
                     </span>
                 </a>                
-                <a class="navbar-item 
-                        bd-navbar-item 
-                        bd-navbar-item-base 
-                        bd-navbar-item-documentation 
-                        is-active" 
+                <a class="navbar-item" 
                         href="/creators">
-                    <span class="icon has-text-primary">
-                        <i class="fas fa-book"></i>
-                    </span>
+                    
                     <span>
                         Creators
                     </span>
                 </a>
                 <a class="
-                    navbar-item
-                    bd-navbar-item
-                    bd-navbar-item-videos
-                    bd-navbar-item-base"                
+                    navbar-item"                
                     href="/">
-                    <span class="icon has-text-success">
-                        <i class="fas fa-play-circle"></i>
-                    </span>
+                    
                     <span>
                         Routine
                     </span>
                 </a>
+            </div>
+            <div class="navbar-end bd-navbar-end bd-is-original">
+                {% if request.user.id %}
+                <a class="navbar-item"                
+                    href="/creators/logout">
+                    
+                    <span>
+                        Logout
+                    </span>
+                </a>
+                {% else %}
+                <a class="navbar-item"                
+                    href="/creators/login">
+                    
+                    <span>
+                        Login
+                    </span>
+                </a>
+                {% endif %}
               
             </div>    
               

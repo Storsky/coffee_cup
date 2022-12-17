@@ -29,7 +29,7 @@ class Post(models.Model):
     description = models.TextField()
     yt_link = models.URLField()
     created_ad = models.DateTimeField(auto_now_add=True)
-    likes_counter = models.IntegerField(default=0)
+    likes =  models.ManyToManyField(User, related_name='liked_posts')
     video_id = models.CharField(max_length=55, default='https://www.youtube.com/embed/dQw4w9WgXcQ')
 
     def save(self, *args, **kwargs):

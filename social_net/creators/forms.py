@@ -33,4 +33,4 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ('owner', 'likes_counter', 'video_id',)
+        exclude = ('owner', 'likes', 'video_id',)

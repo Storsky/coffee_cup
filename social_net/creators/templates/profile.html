@@ -3,24 +3,24 @@
 {% load static %}
 
 {% block content %}
-<div class="column">
-  <div class="blick">
-    <img src="../{{profile.avatar}}" alt="avatar">
-    <h3 class="title is-3">
+<div class="column" >
+  <div class="block">
+    <figure class="image 128x128">
+    <img class="is-rounded" src="../{{profile.avatar}}" alt="avatar">
+    <p class="subtitle">
       @{{ profile.user.username }}
-    </h3>
+    </p>
+    </figure>
   </div>
-  <br>
-  <br>
   <form method="post">
     {% csrf_token %}
-    <div class="buttons has-addons">
+    <div class="buttons are-small has-addons">
       {% if profile in user.profile.follows.all %}
-      <button class="button is-static">Follow</button>
-      <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+      <button class="button is-fullwidth is-static">Follow</button>
+      <button class="button is-fullwidth is-danger" name="follow" value="unfollow">Unfollow</button>
       {% else %}
-      <button class="button is-success" name="follow" value="follow">Follow</button>
-      <button class="button is-static">Unfollow</button>
+      <button class="button is-fullwidth is-success" name="follow" value="follow">Follow</button>
+      <button class="button is-fullwidth is-static">Unfollow</button>
       {%endif%}
     </div>
   </form>
@@ -57,7 +57,8 @@
             </p>
             <iframe width="480" height="270" src={{post.video_id}} title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+              allowfullscreen>
+            </iframe>
             <p>
               {{post.description}}
             </p>
@@ -68,8 +69,8 @@
           <div class="media-right">
             <form method="post">
               {% csrf_token %}
-              <div class="button is-danger is-small">
-                <button class="button is-danger is-small" type="submit" name = "delete">Delete</button>
+              <div class="delete">
+                <button class="delete" type="submit" name = "delete" value = {{post.id}}>Delete</button>
               </div>
             </form>
           </div>

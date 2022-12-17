@@ -4,50 +4,75 @@
 
 {% block content %}
 
-<div class="column">
-{% for post in posts %}
+<div class="column is-full">
+  {% for post in posts %}
 
-    <div class="block">
-      <div class="card">
-        <a href=creator/{{post.owner.profile.id}}>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="../{{post.owner.profile.avatar}}"
-                       alt="Placeholder image">
-                </figure>
+  <div class="block">
+    <div class="card">
+      <div class="columns">
+        <div class="column">
+          <div class="media">
+            <div class="card-content">
+              <div class="hero is-small">
+                <a href=creator/{{post.owner.profile.id}}>
+                  <figure class="image is-48x48">
+                    <img src="../{{post.owner.profile.avatar}}" alt="Placeholder image">
+                  </figure>
+                </a>
               </div>
+            </div>
+            <div class="column">
               <div class="media-content">
                 <p class="title is-4">
                   {{ post.title }}
                 </p>
-                <iframe width="480" height="270" src={{post.video_id}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="640" height="360" src={{post.video_id}} title="YouTube video player" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
                 <p>
                   {{post.description}}
                 </p>
-                <p class="subtitle is-6">
-                  @{{ post.owner }}
-                </p>
+                <div class = buttons>
+                  <button class="button is-static">
+                    @{{ post.owner }} 
+                  </button>
+                  <form method="post">
+                    {% csrf_token %}
+                  <button class="button" type="submit" name="like" value = {{post.id}}>
+                    Like
+                  </button>
+                  <button class="button is-static">
+                    {{post.likes.count}}
+                  </button>
+                  <button class="button" type="submit" name="dislike" value = {{post.id}}>
+                    Dislike
+                  </button>
+                  </form>
+                </div>
+                
               </div>
-              {% if post.user.id == request.user.id %}
+              {% if post.owner.id == request.user.id %}
               <div class="media-right">
                 <form method="post">
                   {% csrf_token %}
                   <div class="button is-danger is-small">
-                    <button class="button is-danger is-small" type="submit" name = "delete">Delete</button>
+                    <button class="button is-danger is-small" type="submit" name="delete" value={{post.id}}>Delete</button>
                   </div>
                 </form>
               </div>
               {% endif %}
             </div>
           </div>
-        </a>
+        </div>
       </div>
     </div>
+  </div>
 
-{% endfor %}
+
+  {% endfor %}
 
 </div>
 
 {% endblock content %}
+
