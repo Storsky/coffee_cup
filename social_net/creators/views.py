@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Profile, Post
-from .forms import PostForm
+from .forms import PostForm, CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -79,3 +79,18 @@ def show_profile(request, pk):
 
 def login_redirect(request):
     return redirect(to='/creators/login')
+
+
+def register(request):
+
+    if request.method == "GET":
+        return render(
+            request, "registration\signup.html",
+            {"form": CustomUserCreationForm}
+        )
+
+    elif request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect(to='/creators/login')

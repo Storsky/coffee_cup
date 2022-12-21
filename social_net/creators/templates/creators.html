@@ -4,37 +4,30 @@
 
 {% block content %}
 
-<div class="column">
+<div class="main">
 
-{% for profile in profiles %}
+  {% for profile in profiles %}
 
-    <div class="block">
-      <div class="card">
-        <a href=/creator/{{profile.id}}>
-          <div class="card-content">
-            <div class="media">
-              <div class="hero is-small">
-                <a href=creator/{{profile.id}}>
-                  <figure class="image is-48x48">
-                    <img src="../{{profile.avatar}}" alt="Avatar">
-                  </figure>
-                </a>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">
-                  {{ profile.user.username }}
-                </p>
-                <p class="subtitle is-6">
-                  @{{ profile.user.username|lower }}
-                </p>
-              </div>
+  <div class="container px-5 py-2">
+    <div class="row">
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-bg-light rounded-4 shadow-lg">
+          <div class="row">
+            <div class="col-2">
+              <a href=creator/{{profile.id}}>
+                <figure class="figure">
+                  <img src="../{{profile.avatar}}" class="img-thumbnail w-50" alt="Placeholder image">
+                  <figcaption class="figure-caption text-right"> @{{ profile.user.username|lower }}</figcaption>
+                </figure>
+              </a>
             </div>
           </div>
-        </a>
+        </div>
       </div>
     </div>
+  </div>
 
-{% endfor %}
+  {% endfor %}
 
 </div>
 

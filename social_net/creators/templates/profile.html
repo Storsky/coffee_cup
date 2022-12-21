@@ -3,133 +3,132 @@
 {% load static %}
 
 {% block content %}
-<div class="column" >
-  <div class="block">
-    <figure class="image 128x128">
-    <img class="is-rounded" src="../{{profile.avatar}}" alt="avatar">
-    <p class="subtitle">
-      @{{ profile.user.username }}
-    </p>
-    </figure>
-  </div>
-  <form method="post">
-    {% csrf_token %}
-    <div class="buttons are-small has-addons">
-      {% if profile in user.profile.follows.all %}
-      <button class="button is-fullwidth is-static">Follow</button>
-      <button class="button is-fullwidth is-danger" name="follow" value="unfollow">Unfollow</button>
-      {% else %}
-      <button class="button is-fullwidth is-success" name="follow" value="follow">Follow</button>
-      <button class="button is-fullwidth is-static">Unfollow</button>
-      {%endif%}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="container px-5 py-2">
+        <figure class="figure">
+          <img class="img-thumbnail w-80 img-rounded" src="../{{profile.avatar}}" alt="avatar">
+          <p class="subtitle">
+            @{{ profile.user.username }}
+          </p>
+        </figure>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="buttons are-small has-addons">
+          {% if profile in user.profile.follows.all %}
+          <button class="btn btn-outlined btn-block btn-lg">Follow</button>
+          <button class="btn btn-link btn-block btn-lg" name="follow" value="unfollow">Unfollow</button>
+          {% else %}
+          <button class="btn btn-link btn-lg btn-block" name="follow" value="follow">Follow</button>
+          <button class="btn btn-outlined btn-lg btn-block">Unfollow</button>
+          {%endif%}
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-<div class="column">
-  {% if request.user.profile.id == profile.id %}
-  <div class="block">
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="button is-link is-fullwidth is-medium" type="submit" name = "submit">
-      Submit!
-    </button>
-    
+    <div class="col-8">
+      {% if request.user.profile.id == profile.id %}
+      <div class="card card-cover overflow-hidden text-bg-light rounded-4 shadow-lg">
+        <div class="form-control">
+          <h4>Новый пост</h4>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="button is-link is-fullwidth is-medium" type="submit" name="submit">
+              Submit!
+            </button>
 
-  </form>
-  </div>
-  {% endif %}
-  {% for post in profile.user.posts.all %}
 
-  <div class="block">
-    <div class="card">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-left">
-            <figure class="image is-48x48">
-              <img src="../{{post.owner.profile.avatar}}" alt="Placeholder image">
+          </form>
+        </div>
+      </div>
+      {% endif %}
+      {% for post in profile.user.posts.all %}
+
+      <div class="card card-cover overflow-hidden text-bg-light rounded-4 shadow-lg">
+        <div class="row">
+          <div class="col-2">
+            <div class="card h-40">
+            <figure class="figure">
+              <img src="../{{post.owner.profile.avatar}}" class="img-thumbnail w-50" alt="Placeholder image">
             </figure>
+            </div>
           </div>
-          
-          <div class="media-content">
-            <p class="title is-4">
-              {{ post.title }}
-            </p>
+
+          <div class="col-7">
             <iframe width="480" height="270" src={{post.video_id}} title="YouTube video player" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen>
             </iframe>
-            <p>
-              {{post.description}}
-            </p>
             <p class="subtitle is-6">
               @{{ post.owner }}
             </p>
           </div>
-          <div class="media-right">
-            <form method="post">
-              {% csrf_token %}
-              <div class="delete">
-                <button class="delete" type="submit" name = "delete" value = {{post.id}}>Delete</button>
-              </div>
-            </form>
+          <div class="col-3">
+            <div class="alert">
+            <h4 class="alert-heading">
+              {{ post.title }}
+            </h4>
+            <hr>
+            <p>
+              {{post.description}}
+            </p>
+            </div>
           </div>
+        </div>
+        <div class="media-right">
+          <form method="post">
+            {% csrf_token %}
+            <div class="delete">
+              <button class="delete" type="submit" name="delete" value={{post.id}}>Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+
+    {% endfor %}
+  </div>
+
+
+  <div class="col">
+    <div class="block">
+      <div class="card py-3">
+        <h3 class="title is-4">
+          {{profile.user.username}} подписан на:
+        </h3>
+        <div class="content">
+          <ul>
+            {% for following in profile.follows.all %}
+            <li>
+              <a href=/creator/{{following.id}}>
+                {{ following }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="card py-3">
+        <h3 class="title is-4">
+          Подписчики {{profile.user.username}}:
+        </h3>
+        <div class="content">
+          <ul>
+            {% for follower in profile.followed_by.all %}
+            <li>
+              <a href=/creator/{{follower.id}}>
+                {{ follower }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+
         </div>
       </div>
     </div>
   </div>
-
-  {% endfor %}
 </div>
-
-
-<div class="column is-one-third">
-  <div class="block">
-    <a href="../">
-      <button class="button is-dark is_outlined">
-        На главную
-      </button>
-    </a>
-    <br>
-    <br>
-
-    <div class="block">
-      <h3 class="title is-4">
-        {{profile.user.username}} подписан на:
-      </h3>
-      <div class="content">
-        <ul>
-          {% for following in profile.follows.all %}
-          <li>
-            <a href=/creator/{{following.id}}>
-              {{ following }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-
-    <div class="block">
-      <h3 class="title is-4">
-        Подписчики {{profile.user.username}}:
-      </h3>
-      <div class="content">
-        <ul>
-          {% for follower in profile.followed_by.all %}
-          <li>
-            <a href=/creator/{{follower.id}}>
-              {{ follower }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
 {% endblock content %}
